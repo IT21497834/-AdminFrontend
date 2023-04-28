@@ -8,12 +8,14 @@ export default function Home() {
 
     const {id}=useParams()
 
+    const [searchTerm, setSearchTerm] = useState("");
+
     useEffect(()=>{
         loadUsers();
     },[]);
 
     const loadUsers=async()=>{
-        const result =await axios.get("http://localhost:8080/users")
+        const result  =await axios.get("http://localhost:8080/users")
         setUsers(result.data); 
     } 
 
@@ -23,8 +25,24 @@ export default function Home() {
     }
 
     return (
+
+
         <div className='container'>
+
+
+            <div className="search">
+                <label>
+
+                        <input type="text" placeholder="Search here...." onChange={(event) => {
+                            setSearchTerm(event.target.value);
+                        }}/>
+                        <i id="eyeIcon" className="fa-regular fa-eye"></i>
+
+                </label>
+            </div>
             <div className='py-4'>
+
+
 
             <table className="table border shadow">
                 <thead>
@@ -41,7 +59,13 @@ export default function Home() {
                 <tbody>
 
                 {
-                    users.map((user,index)=>(
+                    users.filter((val) => {
+                        if(searchTerm == ""){
+                            return val;
+                        }else if(val.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                            return val;
+                        }
+                    }).map((user,index)=>(
                     <tr>
                     <th scope="row" key={index}>{index+1}</th>
                     <td>{user.name}</td>
@@ -73,9 +97,6 @@ export default function Home() {
                     ))
                 }
 
-
-                     
-                    
                 </tbody>
                 </table>
 

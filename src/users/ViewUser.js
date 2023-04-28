@@ -25,6 +25,7 @@ export default function ViewUser(){
         setUser(result.data)
 
     }
+
     return(
         <div className='container'>
             <div className='row'>
